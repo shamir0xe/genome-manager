@@ -1,0 +1,35 @@
+{
+    "fastq_dump": {
+        "out_directory": ["outputs", "fastq-dump"],
+        "cmd0": "fastq-dump --split-files --origfmt --gzip --verbose --outdir {} {}"
+    },
+    "fastqc": {
+        "out_directory": ["outputs", "fastqc"],
+        "in_directory": ["outputs", "fastq-dump"],
+        "cmd0": "fastqc --outdir {} {}"
+    },
+    "trim_galore": {
+        "out_directory": ["outputs", "trimmed"],
+        "in_directory": ["outputs", "fastq-dump"],
+        "length": 18,
+        "cores": 5,
+        "cmd0": "trim_galore --output_dir {} --length {} --cores {} {}"
+    },
+    "bowtie": {
+        "out_directory": ["outputs", "bowtie"],
+        "in_directory": ["outputs", "trimmed"],
+        "bowtie_index": "/etc/bowtie-indices/bowtie_hg38",
+        "cores": 5,
+        "cmd0": "bowtie {} -p {} {} -S {}"
+    },
+    "feature_count": {
+        "out_directory": ["outputs", "counts"],
+        "in_directory": ["outputs", "bowtie"],
+        "strandness": 1,
+        "attribute_type": "Name",
+        "cores": 5,
+        "feature_type": "miRNA",
+        "annotation_file": "/etc/hsa.gff3",
+        "cmd0": "featureCounts -M -s {} -g {} -T {} -t {} -a {} -o {} {}"
+    }
+}

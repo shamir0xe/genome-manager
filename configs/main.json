@@ -1,0 +1,14 @@
+{
+    "pipelines": {
+        "1": ["fastq_dump"],
+        "2": ["fastqc"],
+        "3": ["trim_galore"],
+        "4": ["bowtie"],
+        "5": ["trim_galore", "bowtie"],
+        "6": ["feature_count"],
+        "7": ["fastqc", "trim_galore", "bowtie", "feature_count"]
+    },
+    "pipeline": 7,
+    "input_file_path": ["configs", "input.json"],
+    "log_path": ["storage", "runtime.log"]
+}
